@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="CadastroUsuario.Api/CadastroUsuario.Api.csproj" />
+  <Project Path="CadastroUsuario.Application/CadastroUsuario.Application.csproj" />
+  <Project Path="CadastroUsuario.Domain/CadastroUsuario.Domain.csproj" />
+  <Project Path="CadastroUsuario.Infrastructure/CadastroUsuario.Infrastructure.csproj" />
+  <Project Path="CadastroUsuario.Tests.Classic/CadastroUsuario.Tests.Classic.csproj" />
+</Solution>

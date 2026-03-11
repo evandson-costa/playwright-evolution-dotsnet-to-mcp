@@ -1,46 +1,77 @@
-# Playwright Evolution: Professional Testing & AI Agents
+Playwright Evolution: From C# Integration to AI Agents 🚀
 
-Este repositório foi criado como parte do meu aprendizado no **MBA em Engenharia de IA Aplicada**. O objetivo é demonstrar a evolução das ferramentas de automação de testes, comparando a abordagem clássica de desenvolvimento com a automação moderna impulsionada por Agentes de IA via **MCP (Model Context Protocol)**.
+Este repositório demonstra a implementação de um ecossistema completo de cadastro de usuários, integrando Clean Code, DDD (Domain-Driven Design) e automação de testes moderna. O projeto evolui de testes de integração tradicionais em .NET para a utilização de Agentes de IA via MCP (Model Context Protocol).
+🛠️ Tecnologias e Arquitetura
+Back-End (C# / ASP.NET Core)
 
-## 🚀 Estrutura do Projeto
+Construído seguindo os princípios de DDD e Clean Architecture:
 
-O repositório está dividido em dois ecossistemas principais:
+    Domain: Entidades de negócio e interfaces de contrato.
 
-### 1. `./playwright-dotnet` (Abordagem Tradicional)
-Focado em um ambiente de desenvolvimento robusto utilizando **C# e NUnit**. 
-- **Tecnologias:** .NET Core, Playwright for .NET, NUnit.
-- **Destaque:** Implementação de testes resilientes utilizando `Locators` (como `GetByRole`) e automação de fluxos críticos de negócio.
-- **Ideal para:** Pipelines de CI/CD e garantia de qualidade (QA) em larga escala.
+    Application: Casos de uso e orquestração.
 
-### 2. `./playwright-mcp-ai` (Agentes de IA)
-Explora o uso do Playwright como uma ferramenta para modelos de linguagem (LLMs).
-- **Tecnologias:** Node.js, Playwright MCP Server, Claude/Cursor.
-- **Destaque:** Uso do **Model Context Protocol** para permitir que a IA interaja diretamente com o navegador para gerar scripts de teste dinamicamente.
-- **Diferencial:** Inclui prompts estruturados para geração de testes idempotentes e configuração de CI com GitHub Actions específica para Chromium.
+    Infrastructure: Implementação de repositórios com EF Core, integração com API externa (ViaCEP) e acesso ao SQL Server.
 
----
+    API: Controllers documentadas e preparadas para consumo via Front-End.
 
-## 🧠 O que é MCP (Model Context Protocol)?
+Front-End (React + Vite)
 
-Nesta seção, explorei como o Playwright deixa de ser apenas uma biblioteca e passa a ser um "braço" para a IA. O servidor MCP permite:
-- Que a IA execute ações em tempo real no navegador local.
-- Inspeção dinâmica do DOM para evitar seletores frágeis.
-- Geração autônoma de suítes de teste baseadas em cenários de negócio descritos em Markdown.
+Interface moderna para interação com o usuário:
 
----
+    Busca automática de endereço via CEP (integração via Back-End).
 
-## 🛠️ Como rodar
+    Formulário validado e preparado para automação.
 
-### .NET
-1. `cd playwright-dotnet`
-2. `dotnet build`
-3. `dotnet test`
+Infraestrutura (Docker)
 
-### AI/MCP Setup
-1. Instale o MCP Server: `npx @playwright/mcp@latest --extension`
-2. Configure seu `example.mcp.json` na sua ferramenta de IA (Cursor/Claude).
-3. Utilize os prompts contidos em `generate_test.prompt.md` para criar novos cenários.
+    Container SQL Server 2022 configurado para persistência de dados real.
 
----
+🧪 Estratégia de Testes (Playwright)
 
-**Desenvolvido por um Full Stack Developer apaixonado por C# e agora moldando o futuro com IA.**
+O repositório está dividido em duas abordagens de automação:
+1. ./tests-classic (Abordagem Profissional)
+
+Testes escritos manualmente em C# / NUnit.
+
+    Focado em CI/CD e estabilidade.
+
+    Validação de ponta a ponta: do clique no React à persistência no SQL Server.
+
+2. ./tests-mcp (AI Agent Testing)
+
+Uso do Playwright MCP Server para permitir que LLMs (como Claude/Cursor) operem o navegador.
+
+    Prompt Driven: Scripts baseados em arquivos Markdown para geração autônoma de testes.
+
+    Dynamic Exploration: A IA utiliza as ferramentas do MCP para inspecionar o DOM em tempo real.
+
+🏃 Como Rodar o Projeto
+1. Banco de Dados (Docker)
+Bash
+
+docker compose up -d
+
+Certifique-se de que a porta 1433 está livre no host.
+2. Back-End
+Bash
+
+dotnet tool install --global dotnet-ef
+dotnet ef database update --project CadastroUsuario.Infrastructure --startup-project CadastroUsuario.Api
+dotnet run --project CadastroUsuario.Api
+
+3. Front-End
+Bash
+
+cd frontend
+npm install
+npm run dev
+
+4. Playwright (MCP)
+
+Certifique-se de que o servidor MCP está configurado no seu ambiente de IA:
+JSON
+
+"playwright": {
+  "command": "npx",
+  "args": ["@playwright/mcp@latest", "--extension"]
+}

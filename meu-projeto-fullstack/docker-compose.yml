@@ -1,0 +1,21 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver_cadastro
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=SuaSenhaForte123
+      - MSSQL_PID=Developer
+    volumes:
+      - sql_data:/var/opt/mssql
+    networks:
+      - cadastro-network
+
+networks:
+  cadastro-network:
+    driver: bridge
+
+volumes:
+  sql_data:
