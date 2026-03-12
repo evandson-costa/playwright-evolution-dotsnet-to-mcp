@@ -10,7 +10,6 @@ function App() {
     if (formData.cep.length === 8) {
       setLoading(true);
       try {
-        // Chamada para a SUA API (Porta padrão 5000 ou 5001 do .NET)
         const response = await axios.get(`http://localhost:5138/api/usuarios/cep/${formData.cep}`);
         const { logradouro, bairro, localidade } = response.data;
 

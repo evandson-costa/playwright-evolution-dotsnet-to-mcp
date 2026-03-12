@@ -1,77 +1,93 @@
 Playwright Evolution: From C# Integration to AI Agents 🚀
 
-Este repositório demonstra a implementação de um ecossistema completo de cadastro de usuários, integrando Clean Code, DDD (Domain-Driven Design) e automação de testes moderna. O projeto evolui de testes de integração tradicionais em .NET para a utilização de Agentes de IA via MCP (Model Context Protocol).
+Este repositório demonstra a implementação de um ecossistema completo de cadastro de usuários, integrando Clean Code, DDD (Domain-Driven Design) e automação de testes de última geração. O projeto destaca a transição de testes de integração tradicionais para a utilização de Agentes de IA via MCP (Model Context Protocol).
 🛠️ Tecnologias e Arquitetura
-Back-End (C# / ASP.NET Core)
+Back-End (C# / .NET 10)
 
-Construído seguindo os princípios de DDD e Clean Architecture:
+Arquitetura robusta baseada em Clean Architecture:
 
-    Domain: Entidades de negócio e interfaces de contrato.
+    Domain: Entidades de negócio e regras fundamentais.
 
-    Application: Casos de uso e orquestração.
+    Application: Orquestração de casos de uso e DTOs.
 
-    Infrastructure: Implementação de repositórios com EF Core, integração com API externa (ViaCEP) e acesso ao SQL Server.
+    Infrastructure: Persistência com EF Core, Migrations automatizadas e integração com a API do ViaCEP.
 
-    API: Controllers documentadas e preparadas para consumo via Front-End.
+    API: Endpoints RESTful com suporte a CORS para integração com SPAs.
 
 Front-End (React + Vite)
 
-Interface moderna para interação com o usuário:
+Interface moderna e responsiva:
 
-    Busca automática de endereço via CEP (integração via Back-End).
+    Consumo de API assíncrona com Axios.
 
-    Formulário validado e preparado para automação.
+    Busca dinâmica de endereço via CEP com estados de loading e error handling.
+
+    Campos otimizados com seletores semânticos para facilitar a automação por IA.
 
 Infraestrutura (Docker)
 
-    Container SQL Server 2022 configurado para persistência de dados real.
+    SQL Server 2022: Ambiente de banco de dados conteinerizado, garantindo que o teste de integração seja fiel ao ambiente de produção.
 
-🧪 Estratégia de Testes (Playwright)
+🧪 Estratégia de Testes
+1. Clássico (./tests-classic)
 
-O repositório está dividido em duas abordagens de automação:
-1. ./tests-classic (Abordagem Profissional)
+    Scripts determinísticos focados em estabilidade e regressão.
 
-Testes escritos manualmente em C# / NUnit.
+    Validação direta da persistência no banco de dados.
 
-    Focado em CI/CD e estabilidade.
+2. IA Agent Testing (./tests-mcp)
 
-    Validação de ponta a ponta: do clique no React à persistência no SQL Server.
+    Navegação Autônoma: O Agente de IA utiliza o servidor MCP para explorar o DOM e interagir com elementos em tempo real.
 
-2. ./tests-mcp (AI Agent Testing)
-
-Uso do Playwright MCP Server para permitir que LLMs (como Claude/Cursor) operem o navegador.
-
-    Prompt Driven: Scripts baseados em arquivos Markdown para geração autônoma de testes.
-
-    Dynamic Exploration: A IA utiliza as ferramentas do MCP para inspecionar o DOM em tempo real.
+    Resiliência: Testes que se adaptam a mudanças de layout sem necessidade de refatoração imediata de código.
 
 🏃 Como Rodar o Projeto
-1. Banco de Dados (Docker)
+1. Infraestrutura e Banco
 Bash
 
+# Subir o banco de dados
 docker compose up -d
 
-Certifique-se de que a porta 1433 está livre no host.
-2. Back-End
+# Aplicar migrações (na raiz do projeto)
+dotnet ef database update --project CadastroUsuario.Infrastructure --startup-project CadastroUsuario.Api
+
+2. Execução dos Serviços
+
+Terminal 1 (Back-End):
 Bash
 
-dotnet tool install --global dotnet-ef
-dotnet ef database update --project CadastroUsuario.Infrastructure --startup-project CadastroUsuario.Api
-dotnet run --project CadastroUsuario.Api
+cd CadastroUsuario.Api
+dotnet run
 
-3. Front-End
+Terminal 2 (Front-End):
 Bash
 
 cd frontend
 npm install
 npm run dev
 
-4. Playwright (MCP)
+3. Configuração do Agente (MCP)
 
-Certifique-se de que o servidor MCP está configurado no seu ambiente de IA:
+Adicione o servidor ao seu ambiente de IA (Claude/Cursor):
 JSON
 
 "playwright": {
   "command": "npx",
   "args": ["@playwright/mcp@latest", "--extension"]
 }
+
+🤖 Prompt de Teste (Agente de IA)
+
+Para validar o fluxo completo utilizando o Agente de IA, utilize o prompt abaixo no seu assistente configurado com MCP:
+
+    "IA, ative o servidor Playwright MCP e execute este teste no meu ambiente local:
+
+        Vá para a URL do Front-end (ex: http://localhost:5173).
+
+        Preencha o formulário com dados de teste (Nome, Email e CEP).
+
+        Clique no botão de busca (lupa) e aguarde a resposta da API C#.
+
+        Verifique se o endereço foi preenchido corretamente.
+
+        Clique em 'Salvar no Banco' e confirme o alerta de sucesso."
